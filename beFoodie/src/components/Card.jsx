@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {useCart, useDispatchCart} from "./ContextReducer"
+import { Link } from 'react-router-dom';
 
 function Card(props) {
   const [qty, setQty] = useState(1);
@@ -90,7 +91,15 @@ function Card(props) {
             </select>
             <div className='d-inline h-100 fs-5'>
               Rs.{finalPrice}/-
-              <button className='btn btn-success justify-center ms-2' onClick={handleAddToCart}>Add to Cart</button>
+              {(localStorage.getItem("authToken"))?
+              <div>
+                <button className='bg-success text-white' onClick={handleAddToCart}>Add To Cart</button>
+              </div>
+              :
+              <div>
+                <Link className="btn bg-white text-success mx-1" to="/login">Login</Link>
+              </div>
+              }
             </div>
         </div>
       </div>
