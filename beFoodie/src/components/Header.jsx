@@ -14,8 +14,8 @@ function Header() {
     navigate("/createuser")
   }
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-success">
+     <> 
+     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">beFoodie</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,14 +56,12 @@ function Header() {
             </ul>
           </div>
           <div>
-            
-         {/* <form class="form-inline d-flex" style={{zIndex:"10"}}>
-           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-           <button class="btn btn-outline-success my-2 my-sm-0 background-transparant text-white" type="submit">Search</button>
-         </form> */}
           </div>
         </div>
       </nav>
+    <div className="top-0 left-0 w-screen h-screen bg-cover bg-center bg-no-repeat">
+        <img src="https://images.pexels.com/photos/941869/pexels-photo-941869.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" className="w-full h-full" />
+      </div>
     </>
   )
 }

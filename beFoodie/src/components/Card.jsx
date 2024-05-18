@@ -14,38 +14,6 @@ function Card(props) {
   
   const foodItem = props.foodItem;
   const handleAddToCart = async ()=> {
-    // let food = [];
-    // for(const item of data)  {
-    //   if(data._id === props.foodItem._id) {
-    //     food = item;
-    //     break;
-    //   }
-    // }
-    // if(food != []) {
-    //   console.log("Card.jsx line 24");
-    //   if(food.size === size)  {
-    //     console.log("Card.jsx line 26")
-    //     await dispatch({
-    //       type: "UPDATE",
-    //       item: {
-    //         id: props.foodItem._id, price: finalPrice, qty: qty
-    //       }
-    //     })
-    //   }
-    // }
-    // else  {
-    //   await dispatch({
-    //   type: "ADD",
-    //   item: {
-    //       _id: foodItem._id, 
-    //       name: foodItem.name, 
-    //       qty: qty, 
-    //       size: size, 
-    //       price: finalPrice, 
-    //       img: foodItem.img 
-    //   }
-    // });
-  // }
   await dispatch({
     type: "ADD",
     item: {
@@ -57,7 +25,7 @@ function Card(props) {
         img: foodItem.img 
     }
   });
-    console.log(data);
+    // console.log(data);
   }
   
 

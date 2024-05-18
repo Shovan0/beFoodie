@@ -7,14 +7,14 @@ const CartDispatchContext = createContext();
 const reducer = (state, action) => {
     switch (action.type) {
         case "ADD":
-            console.log("Adding item to cart:", action.item);
+            // console.log("Adding item to cart:", action.item);
             const newState = [...state, action.item];
-            console.log("New cart state:", newState);
+            // console.log("New cart state:", newState);
             return newState;
         case "REMOVE":
             return state.filter((item, index) => index !== action.index);
         case "UPDATE":
-            console.log("ContextReducer.jsx line 17")
+            // console.log("ContextReducer.jsx line 17")
             let updatedState = [...state];
             const indexToUpdate = updatedState.findIndex((food) => food.id === action.id);
             if (indexToUpdate !== -1) {

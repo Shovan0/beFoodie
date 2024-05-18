@@ -6,6 +6,7 @@ function Cart() {
     let data = useCart();
     let dispatch = useDispatchCart();
 
+    
     if (data.length === 0) {
         return (
             <div>
@@ -13,52 +14,76 @@ function Cart() {
             </div>
         )
     }
+    let totalPrice = data.reduce((total, food) => total + food.price, 0);
+    let userEmail = localStorage.getItem("userEmail")
     const handleCheckOut = async ()=> {
-        let userEmail = localStorage.getItem("userEmail")
-        console.log("This is the User Email : ", userEmail)
-        let response = await fetch("http://localhost:5000/api/orderdata", {
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
+        try {
+            console.log(window);
+            const { data: { order } } = await axios.post("http://localhost:5000/api/checkout", {
+                totalPrice
+            });
+            const { data: { key } } = await axios.get("http://localhost:5000/api/getkey");
+            const options = {
+                key: key, // Enter the Key ID generated from the Dashboard
+                amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                currency: "INR",
+                name: "Shovan Nath", // your business name
+                description: `You have ordered food worth Rs. ${totalPrice}`,
+                image: "https://i.pinimg.com/564x/1c/b2/73/1cb2738b9cf909d4507298a6052c5761.jpg",
+                order_id: order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                callback_url: "http://localhost:5000/api/paymentverification",
+                prefill: { // We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                    name: "You", // your customer's name
+                    email: "gaurav.kumar@example.com",
+                    contact: "9000090000" // Provide the customer's phone number for better conversion rates 
+                },
+                notes: {
+                    "address": "Razorpay Corporate Office"
+                },
+                theme: {
+                    "color": "#121212"
+                }
+            };
+            const razor = new window.Razorpay(options);
+            razor.open();
+        } catch (error) {
+            console.error("Error during checkout:", error);
+            // Handle error here
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        try {
+            let response = await axios.post("http://localhost:5000/api/orderdata", {
                 email: userEmail,
                 orderData: data,
                 date: new Date().toDateString()
-            })
-        })
-        console.log("Order Response:", response);
-        if(response.status === 200) {
-            dispatch({type:"DROP"})
+            });
+            console.log("Order Response:", response);
+            
+            if (response && response.status === 200) {
+                dispatch({type: "DROP"});
+            }
+        } catch (error) {
+            console.log("Cart.jsx line 83 ", error);
         }
+        
     }
-
-    // const handleCheckOut = async (req, res)=>  {
-    //     e.preventDefault();
-    //     let userEmail = localStorage.getItem("")
-    //     try {
-    //       const response = await axios.post("http://localhost:5000/api/createuser", {
-    //         email: 
-    //       });
-    //       console.log(response.data);
-    //       if (!response.data.success) {
-    //         alert("Enter valid credentials");
-    //       }
-    //       else {
-    //         navigate("/");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error:", error);
-    //       alert("An error occurred while submitting the form");
-    //     }
-    // }
-
-
-
-    
-    // Calculate total price
-    let totalPrice = data.reduce((total, food) => total + food.price, 0);
-
     return (
         <>
             <div>

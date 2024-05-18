@@ -9,6 +9,8 @@ function Home() {
   const [foodItem, setFoodItem] = useState([]);
   const [foodCatagory, setFoodCatagory] = useState([]);
 
+  // localStorage.removeItem("authToken")
+
   const loadData = async () => {
     try {
       let response = await fetch("http://localhost:5000/api/fooddata", {
@@ -27,44 +29,35 @@ function Home() {
   } 
 
   useEffect(() => {
+
     loadData();
   }, []);
 
   return (
     <>
       <Header />
-      <Carousel />
-      <div className="container">
-      {
-          foodCatagory && foodCatagory.length > 0 ? (
-            foodCatagory.map((category, index) => (
-              <div className='row mb-3'>
-              <div key={index} className='fs-4'>
-                {category.CategoryName}
-              </div>
-                <hr />
-                {foodItem && foodItem.length > 0 ? 
-                foodItem.filter((item)=>
-                  item.CategoryName === category.CategoryName
-                ).map((filterItem)=>{
-                  return (
-                    <div key={filterItem._id} className='m-3 col-12 col-md-6 col-lg-3'>
-                      <Card
-                      foodItem={filterItem}
-                      options = {filterItem.options[0]}
-                      />
-                    </div>
-                  )
-                })
-                : (
-                  <div>No such data found</div>
-                )}
-              </div>
-            ))
-          ) : (
-            <div>No categories found</div>
-          )
-      }
+            <div className="container">
+            {foodCatagory && foodCatagory.length > 0 ? (
+        foodCatagory.map((category, index) => (
+          <div key={index} className='row mb-3'>
+            <div className='fs-4'>{category.CategoryName}</div>
+            <hr />
+            {foodItem && foodItem.length > 0 ? 
+              foodItem.filter((item) => item.CategoryName === category.CategoryName)
+                .map((filterItem) => (
+                  <div key={filterItem._id} className='m-3 col-12 col-md-6 col-lg-3'>
+                    <Card foodItem={filterItem} options={filterItem.options[0]} />
+                  </div>
+                ))
+              : (
+                <div>No such data found</div>
+              )}
+          </div>
+        ))
+      ) : (
+        <div>No categories found</div>
+      )}
+
       </div>
       <Footer />
     </>

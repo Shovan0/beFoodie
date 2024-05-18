@@ -4,7 +4,7 @@ import Order from '../models/Orders.js'
 
 router.post("/orderdata", async (req, res)=>  {
     let data = req.body.orderData;
-    await data.slice(0, 0, {orderDate : req.body.orderDate})
+    // await data.slice(0, 0, {orderDate : req.body.orderDate})
 
     // console.log("This is the User Email : ", req.body.email)
     let emailId = await Order.findOne({email : req.body.email})

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-
-const URL = "mongodb://127.0.0.1:27017/beFoodie"
+import {config} from 'dotenv'
+config({path :"./config/config.env"})
 
 const mongo = () => {
-    return mongoose.connect(URL)
+    return mongoose.connect(process.env.URL)
         .then(async () => {
             console.log("DB connected!!");
             // Fetch food items and categories
