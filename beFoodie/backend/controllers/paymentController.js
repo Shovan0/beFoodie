@@ -1,7 +1,7 @@
 import { instance } from "../index.js"
-// import {config} from "dotenv";
+import {config} from "dotenv";
 import crypto from "crypto"
-// config({path : "../config/config.env"})
+config({path : "../config/config.env"})
 
 
 export const checkOut = async (req, res)=> {

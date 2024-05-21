@@ -1,49 +1,61 @@
 import React from 'react';
 import { useCart, useDispatchCart } from '../components/ContextReducer';
-import axios from 'axios'
 
 function Cart() {
     let data = useCart();
     let dispatch = useDispatchCart();
 
-    
     if (data.length === 0) {
         return (
             <div>
                 <div className='m-5 w-100 text-center fs-3'>The Cart is Empty !! </div>
             </div>
-        )
+        );
     }
+
     let totalPrice = data.reduce((total, food) => total + food.price, 0);
-    let userEmail = localStorage.getItem("userEmail")
-    const handleCheckOut = async ()=> {
+    let userEmail = localStorage.getItem("userEmail");
+
+    const handleCheckOut = async () => {
         try {
-            console.log(window);
-            const { data: { order } } = await axios.post("http://localhost:5000/api/checkout", {
-                totalPrice
+            // First, post to the checkout API to get the order details
+            const checkoutResponse = await fetch("http://localhost:5000/api/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ totalPrice })
             });
-            const { data: { key } } = await axios.get("http://localhost:5000/api/getkey");
+
+            const { order } = await checkoutResponse.json();
+
+            // Next, get the Razorpay key
+            const keyResponse = await fetch("http://localhost:5000/api/getkey");
+            const { key } = await keyResponse.json();
+            console.log("Order created : ", order);
+
             const options = {
-                key: key, // Enter the Key ID generated from the Dashboard
-                amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                key: key,
+                amount: order.amount,
                 currency: "INR",
-                name: "Shovan Nath", // your business name
+                name: "Shovan Nath",
                 description: `You have ordered food worth Rs. ${totalPrice}`,
                 image: "https://i.pinimg.com/564x/1c/b2/73/1cb2738b9cf909d4507298a6052c5761.jpg",
-                order_id: order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                order_id: order.id,
                 callback_url: "http://localhost:5000/api/paymentverification",
-                prefill: { // We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-                    name: "You", // your customer's name
+                prefill: {
+                    name: "You",
                     email: "gaurav.kumar@example.com",
-                    contact: "9000090000" // Provide the customer's phone number for better conversion rates 
+                    contact: "9000090000"
                 },
                 notes: {
                     "address": "Razorpay Corporate Office"
                 },
                 theme: {
-                    "color": "#121212"
+                    color: "#121212"
                 }
             };
+
             const razor = new window.Razorpay(options);
             razor.open();
         } catch (error) {
@@ -51,39 +63,28 @@ function Cart() {
             // Handle error here
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         try {
-            let response = await axios.post("http://localhost:5000/api/orderdata", {
-                email: userEmail,
-                orderData: data,
-                date: new Date().toDateString()
+            // After successful payment, post the order data
+            const orderResponse = await fetch("http://localhost:5000/api/orderdata", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                    orderData: data,
+                    date: new Date().toDateString()
+                })
             });
-            console.log("Order Response:", response);
-            
-            if (response && response.status === 200) {
-                dispatch({type: "DROP"});
+
+            if (orderResponse.ok) {
+                dispatch({ type: "DROP" });
             }
         } catch (error) {
             console.log("Cart.jsx line 83 ", error);
         }
-        
-    }
+    };
+
     return (
         <>
             <div>
@@ -128,7 +129,7 @@ function Cart() {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default Cart;
