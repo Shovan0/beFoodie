@@ -7,9 +7,15 @@ function Cart() {
 
     if (data.length === 0) {
         return (
-            <div>
-                <div className='m-5 w-100 text-center fs-3'>The Cart is Empty !! </div>
-            </div>
+            <>
+                <Header />
+                <div className='flex items-center justify-center min-h-screen bg-red-200'>
+                    <div className='text-center text-lg font-bold text-red-800'>
+                        The Cart is Empty!!
+                    </div>
+                </div>
+                <Footer />
+            </>
         );
     }
 
@@ -58,11 +64,6 @@ function Cart() {
 
             const razor = new window.Razorpay(options);
             razor.open();
-        } catch (error) {
-            console.error("Error during checkout:", error);
-            // Handle error here
-        }
-
         try {
             // After successful payment, post the order data
             const orderResponse = await fetch("http://localhost:5000/api/orderdata", {
@@ -83,48 +84,60 @@ function Cart() {
         } catch (error) {
             console.log("Cart.jsx line 83 ", error);
         }
+        } catch (error) {
+            console.error("Error during checkout:", error);
+            // Handle error here
+        }
     };
 
     return (
         <>
-            <div>
-                <div className='container m-auto mt-5 table-responsive table-responsive-sm table-responsive-md'>
-                    <table className="table table-hover">
-                        <thead className="text-success fd-4">
-                            <tr>
-                                <th scope='col'>#</th>
-                                <th scope='col'>Name</th>
-                                <th scope='col'>Quantity</th>
-                                <th scope='col'>Option</th>
-                                <th scope='col'>Amount</th>
-                                <th scope='col'></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((food, index) => (
-                                <tr key={index}>
-                                    <th scope='row'>{index + 1}</th>
-                                    <td>{food.name}</td>
-                                    <td>{food.qty}</td>
-                                    <td>{food.size}</td>
-                                    <td>{food.price}</td>
-                                    <td>
-                                        <button type='button' className='btn p-0' onClick={() => dispatch({ type: "REMOVE", index: index })}>
-                                            Del
-                                        </button>
-                                    </td>
+            <div className='flex items-center min-h-[80vh]'>
+                <div className='container mx-auto p-6 bg-white rounded-lg shadow-lg'>
+                    <div className='overflow-x-auto'>
+                        <table className="table-auto w-full text-left rounded-lg overflow-hidden">
+                            <thead className="bg-red-500 text-white">
+                                <tr>
+                                    <th className='px-4 py-2'>#</th>
+                                    <th className='px-4 py-2'>Name</th>
+                                    <th className='px-4 py-2'>Quantity</th>
+                                    <th className='px-4 py-2'>Option</th>
+                                    <th className='px-4 py-2'>Amount</th>
+                                    <th className='px-4 py-2'></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-                    {/* Display total price */}
-                    <div className="text-end">
-                        <strong>Total Price: Rs.{totalPrice}/-</strong>
+                            </thead>
+                            <tbody>
+                                {data.map((food, index) => (
+                                    <tr key={index} className="hover:bg-red-50">
+                                        <td className='border px-4 py-2'>{index + 1}</td>
+                                        <td className='border px-4 py-2'>{food.name}</td>
+                                        <td className='border px-4 py-2'>{food.qty}</td>
+                                        <td className='border px-4 py-2'>{food.size}</td>
+                                        <td className='border px-4 py-2'>Rs.{food.price}</td>
+                                        <td className='border px-4 py-2 text-center'>
+                                            <button
+                                                type='button'
+                                                className='text-red-500 hover:text-red-700'
+                                                onClick={() => dispatch({ type: "REMOVE", index: index })}
+                                            >
+                                                Del
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-
-                    <div>
-                        <button className='btn bg-success mt-5' onClick={handleCheckOut}>Check Out</button>
+                    <div className="mt-4 text-right">
+                        <div className='text-lg font-bold text-red-600'>Total Price: Rs.{totalPrice}/-</div>
+                    </div>
+                    <div className='flex justify-end mt-6'>
+                        <button
+                            className='bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600'
+                            onClick={handleCheckOut}
+                        >
+                            Check Out
+                        </button>
                     </div>
                 </div>
             </div>

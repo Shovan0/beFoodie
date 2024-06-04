@@ -1,13 +1,12 @@
 import React from 'react'
 import Header from '../components/Header'
 
-function MyOrder() {
+function About() {
   return (
     <>
-    <Header />
-    <div>MyOrder</div>
+    <div>About</div>
     </>
   )
 }
 
-export default MyOrder
+export default About
