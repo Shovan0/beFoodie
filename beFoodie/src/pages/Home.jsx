@@ -30,7 +30,6 @@ function Navbar() {
 
   return (
     <>
-    {/* <Header /> */}
     <div class="flex justify-center">
     <div class="inline-block">
           <img 
@@ -39,14 +38,6 @@ function Navbar() {
             className="rounded-xl h-[80vh]"
             style={{ animationName: 'fadeIn', animationDuration: '1s' }}
           />
-          {/* <div className='absolute bottom-0 left-0 p-4 text-white bg-opacity-50 rounded-t-lg' style={{ animationName: 'fadeIn', animationDuration: '3s' }}>
-            <h2 className="font-medium text-[4.5vw] text-white bg-opacity-50">
-              Order your food from here
-            </h2>
-            <button className="border-none text-[#000000] font-medium px-[1vw] py-[1.5vw] bg-white text-[1vw] rounded-[50px]">
-              Show Menu
-            </button>
-          </div> */}
     </div>
     </div>
     <div className="">
