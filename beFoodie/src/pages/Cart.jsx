@@ -5,16 +5,14 @@ function Cart() {
     let data = useCart();
     let dispatch = useDispatchCart();
 
-    if (data.length == 0) {
+    if (data.length === 0) {
         return (
             <>
-                <Header />
                 <div className='flex items-center justify-center min-h-screen bg-red-200'>
                     <div className='text-center text-lg font-bold text-red-800'>
                         The Cart is Empty!!
                     </div>
                 </div>
-                <Footer />
             </>
         );
     }
@@ -24,7 +22,6 @@ function Cart() {
 
     const handleCheckOut = async () => {
         try {
-            // First, post to the checkout API to get the order details
             const checkoutResponse = await fetch("http://localhost:5000/api/checkout", {
                 method: "POST",
                 headers: {
@@ -34,11 +31,8 @@ function Cart() {
             });
 
             const { order } = await checkoutResponse.json();
-
-            // Next, get the Razorpay key
             const keyResponse = await fetch("http://localhost:5000/api/getkey");
             const { key } = await keyResponse.json();
-            console.log("Order created : ", order);
 
             const options = {
                 key: key,
@@ -64,29 +58,28 @@ function Cart() {
 
             const razor = new window.Razorpay(options);
             razor.open();
-        try {
-            // After successful payment, post the order data
-            const orderResponse = await fetch("http://localhost:5000/api/orderdata", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: userEmail,
-                    orderData: data,
-                    date: new Date().toDateString()
-                })
-            });
 
-            if (orderResponse.ok) {
-                dispatch({ type: "DROP" });
+            try {
+                const orderResponse = await fetch("http://localhost:5000/api/orderdata", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        orderData: data,
+                        date: new Date().toDateString()
+                    })
+                });
+
+                if (orderResponse.ok) {
+                    dispatch({ type: "DROP" });
+                }
+            } catch (error) {
+                console.log("Cart.jsx line 83 ", error);
             }
         } catch (error) {
-            console.log("Cart.jsx line 83 ", error);
-        }
-        } catch (error) {
             console.error("Error during checkout:", error);
-            // Handle error here
         }
     };
 

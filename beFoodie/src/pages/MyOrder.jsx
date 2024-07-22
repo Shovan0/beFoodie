@@ -14,8 +14,8 @@ function MyOrder() {
         body: JSON.stringify({ email: "shovan@gmail.com" })
       });
       response = await response.json();
-      setOrder(response.orderData);
-      console.log("this is response ", response.orderData);
+      setOrder(response.orderData.orderData);
+      console.log("this is response ", response.orderData.orderData);
     } catch (error) {
       console.error("Error loading data:", error);
     }
@@ -24,7 +24,6 @@ function MyOrder() {
   useEffect(() => {
     loadData();
   }, []);
-
   return (
     <div className="min-h-screen flex justify-center my-7">
       <div>
