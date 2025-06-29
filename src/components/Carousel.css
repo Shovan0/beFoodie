@@ -1,0 +1,20 @@
+.carousel-item img {
+    width: auto;
+    height: auto; /* Adjust the max-height as needed */
+  }
+  .carousel-item {
+    transition: opacity 1s ease-in-out;
+  }
+  .carousel-item.active {
+    opacity: 1;
+  }
+  .carousel-item-next, .carousel-item-prev {
+    opacity: 0;
+  }
+  .carousel-item-next.carousel-item-left, .carousel-item-prev.carousel-item-right, .carousel-item.active {
+    opacity: 1;
+  }
+  .carousel-inner{
+    max-height: 70vh;
+    object-fit: contain;
+  }
