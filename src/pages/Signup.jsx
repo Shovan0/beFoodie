@@ -35,59 +35,107 @@ function Signup({onClose , onOpen}) {
 
   return (
     <>
-    <div className="flex justify-center items-center bg-red-100">
-      <form onSubmit={handleSubmit} className="bg-red-200 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <div className="mb-6">
-          <label htmlFor="exampleInputEmail1" className="block mb-2 text-sm font-medium text-red-700">Name</label>
-          <input type="text" name="name" value={details.name} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Name" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="exampleInputPassword1" className="block mb-2 text-sm font-medium text-red-700">Email</label>
-          <input type="email" name="email" value={details.email} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Email" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="exampleInputPassword1" className="block mb-2 text-sm font-medium text-red-700">Password</label>
-          <input type="password" name="password" value={details.password} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Password" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="exampleInputPassword1" className="block mb-2 text-sm font-medium text-red-700">Location</label>
-          <input type="text" name="location" value={details.location} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Location" />
-        </div>
-        <div className="flex items-center justify-between">
-          <button type="submit" className="p-[10px_30px] border border-red-500 rounded-[50px] bg-transparent cursor-pointer hover:bg-[#f19282] transition duration-300">Submit</button>
-          <Link onClick={onOpen} className="text-md text-black hover:underline">Already a User?</Link>
-        </div>
-      </form>
-    </div>
+      <div
+        onClick={onClose}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm"
+      >
+        <form
+          onSubmit={handleSubmit}
+          onClick={(e) => e.stopPropagation()}
+          className="relative bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-3 right-3 text-gray-400 hover:text-red-500"
+          >
+            <i className="fa-solid fa-xmark text-xl"></i>
+          </button>
 
+          <h2 className="text-2xl font-semibold text-emerald-600 mb-6 text-center">
+            Create Account
+          </h2>
 
-    {/* <div className='container'>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="exampleInputEmail1">Name</label>
-          <input type="text" name='name' value={details.name} onChange={onChange} className="form-control" placeholder="Enter name" />
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Email</label>
-          <input type="email" name='email' value={details.email} onChange={onChange} className="form-control" placeholder="Email" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Password</label>
-          <input type="password" name='password' value={details.password} onChange={onChange} className="form-control" placeholder="Password" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Location</label>
-          <input type="text" name='location' value={details.location} onChange={onChange} className="form-control" placeholder="Location" />
-        </div>
-        <div>
-          <button type="submit" className="m-3 btn btn-success">Submit</button>
-          <a href="/login" className='m-3'>Already a User ??</a>
-        </div>
-        
-      </form>
-    </div> */}
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={details.name}
+              onChange={onChange}
+              required
+              placeholder="Enter your name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={details.email}
+              onChange={onChange}
+              required
+              placeholder="example@domain.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+      
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={details.password}
+              onChange={onChange}
+              required
+              placeholder="••••••••"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Location
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={details.location}
+              onChange={onChange}
+              required
+              placeholder="City / Area"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="px-5 py-2 border border-emerald-600 text-emerald-600 rounded-full hover:bg-emerald-50"
+            >
+              Submit
+            </button>
+            <Link
+              onClick={onOpen}
+              className="text-sm text-gray-600 hover:text-emerald-600 hover:underline"
+            >
+              Already a user?
+            </Link>
+          </div>
+        </form>
+      </div>
     </>
+
+
+
   );
 }
 

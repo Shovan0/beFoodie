@@ -40,41 +40,78 @@ const navigate = useNavigate();
   };
   return (
     <>
-    <div ref={modalRef} onClick={closeModal} className="flex justify-center items-center bg-red-100">
-      <form onSubmit={handleSubmit} className="bg-red-200 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <div className="mb-6">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-red-700">Email</label>
-          <input type="email" name="email" value={details.email} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Email" />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block mb-2 text-sm font-medium text-red-700">Password</label>
-          <input type="password" name="password" value={details.password} onChange={onChange} className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Password" />
-        </div>
-        <div className="flex items-center justify-between">
-          <button type="submit" className="p-[10px_30px] border border-red-500 rounded-[50px] bg-transparent cursor-pointer hover:bg-[#f19282] transition duration-300">Submit</button>
-          <Link onClick={onOpen} className="text-md text-black hover:underline">Don't have an account?</Link>
-        </div>
-      </form>
-    </div>
+      <div
+        ref={modalRef}
+        onClick={onClose}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm"
+      >
+        <form
+          onSubmit={handleSubmit}
+          onClick={(e) => e.stopPropagation()} // Prevent close on form click
+          className="relative bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-3 right-3 text-gray-400 hover:text-red-500"
+          >
+            <i className="fa-solid fa-xmark text-xl"></i>
+          </button>
 
+          <h2 className="text-2xl font-semibold text-emerald-600 mb-6 text-center">
+            Login to beFoodie
+          </h2>
 
-    {/* <div className='container'>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Email</label>
-          <input type="email" name='email' value={details.email} onChange={onChange} className="form-control" placeholder="Email" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1">Password</label>
-          <input type="password" name='password' value={details.password} onChange={onChange} className="form-control" placeholder="Password" />
-        </div>
-        <div>
-          <button type="submit" className="m-3 btn btn-success">Submit</button>
-          <a href="/createuser" className='m-3'>Not have an account??</a>
-        </div>
-      </form>
-    </div> */}
+          <div className="mb-5">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={details.email}
+              onChange={onChange}
+              required
+              placeholder="example@domain.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={details.password}
+              onChange={onChange}
+              required
+              placeholder="••••••••"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="px-5 py-2 border border-emerald-600 text-emerald-600 rounded-full hover:bg-emerald-50"
+            >
+              Submit
+            </button>
+            <Link
+              onClick={onOpen}
+              className="text-sm text-gray-600 hover:text-emerald-600 hover:underline"
+            >
+              Don’t have an account?
+            </Link>
+          </div>
+        </form>
+      </div>
     </>
+
+
+
   )
 }
 

@@ -5,16 +5,28 @@ import { Link } from 'react-router-dom';
 function Card(props) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('');
+  const priceref = useRef();
 
-  let priceref = useRef();
-  let data = useCart();
-  let dispatch = useDispatchCart();
-  let options = props.options;
-  let priceOptions = Object.keys(options);
+  const data = useCart();
+  const dispatch = useDispatchCart();
 
+  const options = props.options;
+  const priceOptions = Object.keys(options);
   const foodItem = props.foodItem;
 
+  const finalPrice = qty * parseInt(options[size]);
+
+  useEffect(() => {
+    setSize(priceref.current.value);
+  }, []);
+
   const handleAddToCart = async () => {
+    if (!localStorage.getItem('authToken')) {
+      // If not logged in, show login modal
+      props.onOpen();
+      return;
+    }
+
     await dispatch({
       type: 'ADD',
       item: {
@@ -26,42 +38,51 @@ function Card(props) {
         img: foodItem.img,
       },
     });
-    // console.log(data);
   };
 
-  let finalPrice = qty * parseInt(options[size]);
-  useEffect(() => {
-    setSize(priceref.current.value);
-  }, []);
-
   return (
-    <div className="max-w-sm mx-auto my-3 bg-white rounded-lg shadow-lg">
+    <div className="max-w-sm mx-auto my-6 bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg">
+      {/* Image */}
       <img
-        src={props.foodItem.img}
-        className="w-full h-48 object-cover rounded-t-lg"
-        alt={props.foodItem.name}
+        src={foodItem.img}
+        alt={foodItem.name}
+        className="w-full h-48 object-cover rounded-t-2xl"
       />
-      <div className="p-4">
-        <h5 className="text-xl font-bold mb-2">{props.foodItem.name}</h5>
-        <p className="text-gray-700 mb-4">This is a description.</p>
+
+      {/* Content */}
+      <div className="p-5">
+        {/* Title */}
+        <h5 className="text-xl font-semibold text-gray-800 mb-2">
+          {foodItem.name}
+        </h5>
+
+        {/* Description */}
+        <p className="text-gray-600 text-sm mb-4">
+          A delicious option for your next meal. Choose your size and quantity below.
+        </p>
+
+        {/* Quantity and Size Selector */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
+          {/* Quantity Buttons */}
+          <div className="flex items-center gap-2">
             <button
-              className="bg-green-500 text-white p-1 rounded-full"
+              className="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
               onClick={() => setQty((prevQty) => Math.max(prevQty - 1, 1))}
             >
-              <i class="fa-solid fa-minus"></i>
+              <i className="fa-solid fa-minus"></i>
             </button>
-            <span className="mx-2">{qty}</span>
+            <span className="font-medium text-gray-800">{qty}</span>
             <button
-              className="bg-green-500 text-white p-1 rounded-full"
+              className="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
               onClick={() => setQty((prevQty) => prevQty + 1)}
             >
-              <i class="fa-solid fa-plus"></i>
+              <i className="fa-solid fa-plus"></i>
             </button>
           </div>
+
+          {/* Size Dropdown */}
           <select
-            className="bg-green-500 text-white p-2 rounded"
+            className="bg-emerald-500 text-white text-sm px-3 py-2 rounded-md outline-none hover:bg-emerald-600 cursor-pointer"
             ref={priceref}
             onChange={(e) => setSize(e.target.value)}
           >
@@ -72,25 +93,19 @@ function Card(props) {
             ))}
           </select>
         </div>
+
+        {/* Price */}
         <div className="text-lg font-bold text-gray-800 mb-4">
-          Rs. {finalPrice}/-
+          ₹{finalPrice}/-
         </div>
-        {localStorage.getItem('authToken') ? (
-          <button
-            className="p-[10px_30px] border border-red-500 rounded-[50px] bg-transparent cursor-pointer hover:bg-[#f19282] transition duration-300"
-            onClick={handleAddToCart}
-          >
-            Add To Cart
-          </button>
-        ) : (
-          <Link
-            className="w-full bg-white text-green-500 py-2 rounded-lg border border-green-500 hover:bg-green-500 hover:text-white text-center block"
-            to="/login"
-          >
-            Login
-          </Link>
-          
-        )}
+
+        {/* Action Button */}
+        <button
+          onClick={handleAddToCart}
+          className="w-full py-2 bg-emerald-600 text-white font-medium rounded-full hover:bg-emerald-700 transition"
+        >
+          Add To Cart
+        </button>
       </div>
     </div>
   );

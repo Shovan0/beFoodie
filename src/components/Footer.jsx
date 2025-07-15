@@ -4,67 +4,57 @@ import { Link } from 'react-router-dom';
 function Footer() {
     return (
         <>
-        <div>
-            <div>
-                <div>
+  <footer className="bg-white border-t border-gray-200 py-10 mt-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm text-gray-600">
+      
+      {/* Logo + Copyright */}
+      <div>
+        <Link to="/" className="text-2xl font-semibold text-emerald-600">
+          beFoodie
+        </Link>
+        <p className="mt-2 text-gray-500">© 2025 beFoodie. All rights reserved.</p>
+      </div>
 
-                </div>
-                <div>
+      {/* Explore */}
+      <div>
+        <h5 className="text-base font-semibold text-gray-800 mb-3">Explore</h5>
+        <ul className="space-y-2">
+          <li><a href="#" className="hover:text-emerald-600">Home</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Features</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Pricing</a></li>
+          <li><a href="#" className="hover:text-emerald-600">FAQs</a></li>
+          <li><a href="#" className="hover:text-emerald-600">About</a></li>
+        </ul>
+      </div>
 
-                </div>
-                <div>
-                    
-                </div>
-            </div>
-        </div>
-        <footer className='bg-gray-800 text-white py-8 mt-auto'>
-            <div className='container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4'>
-                <div className="mb-3">
-                    <Link to="/" className="flex items-center mb-3 text-white text-decoration-none">
-                        <svg className="bi me-2" width="40" height="32"><use xlinkHref="#bootstrap"></use></svg>
-                    </Link>
-                    <p className="text-gray-400">© 2022</p>
-                </div>
+      {/* Company */}
+      <div>
+        <h5 className="text-base font-semibold text-gray-800 mb-3">Company</h5>
+        <ul className="space-y-2">
+          <li><a href="#" className="hover:text-emerald-600">Careers</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Partners</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Investors</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Press</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Blog</a></li>
+        </ul>
+      </div>
 
-                <div className="mb-3">
-                    {/* Empty column for spacing */}
-                </div>
+      {/* Help */}
+      <div>
+        <h5 className="text-base font-semibold text-gray-800 mb-3">Help</h5>
+        <ul className="space-y-2">
+          <li><a href="#" className="hover:text-emerald-600">Support</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Terms</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Privacy</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Accessibility</a></li>
+          <li><a href="#" className="hover:text-emerald-600">Contact</a></li>
+        </ul>
+      </div>
 
-                <div className="mb-3">
-                    <h5 className='font-bold text-lg'>Section</h5>
-                    <ul className="flex flex-col space-y-2">
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Features</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">FAQs</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">About</a></li>
-                    </ul>
-                </div>
+    </div>
+  </footer>
+</>
 
-                <div className="mb-3">
-                    <h5 className='font-bold text-lg'>Section</h5>
-                    <ul className="flex flex-col space-y-2">
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Features</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">FAQs</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">About</a></li>
-                    </ul>
-                </div>
-
-                <div className="mb-3">
-                    <h5 className='font-bold text-lg'>Section</h5>
-                    <ul className="flex flex-col space-y-2">
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Home</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Features</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">Pricing</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">FAQs</a></li>
-                        <li><a href="#" className="text-gray-400 hover:text-white transition">About</a></li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
-        </>
     );
 }
 
