@@ -31,8 +31,8 @@ function Navbar() {
 
   return (
     <>
-    <div class="flex justify-center">
-    <div class="inline-block">
+    <div className="flex justify-center">
+    <div className="inline-block">
           <img 
             src="https://images.pexels.com/photos/941869/pexels-photo-941869.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
             alt="Food" 
@@ -52,7 +52,7 @@ function Navbar() {
             foodItem.filter((item) => item.CategoryName === category.CategoryName)
               .map((filterItem) => (
                 <div key={filterItem._id} className="w-full md:w-1/2 lg:w-1/4 p-3">
-                  <Card foodItem={filterItem} options={filterItem.options[0]} />
+                  <Card foodItem={filterItem} options={filterItem.options[0]}/>
                 </div>
               ))
             : (

@@ -1,43 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useCart, useDispatchCart } from './ContextReducer';
-import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { addToCart } from '../features/cartSlice'; 
+import { openLogin } from '../features/modalSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
-function Card(props) {
+function Card({ foodItem, options, onOpen }) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('');
-  const priceref = useRef();
+  const [token, setToken] = useState('');
+  const priceRef = useRef();
+  const showLogin = useSelector((state) => state.modal.showLogin);
 
-  const data = useCart();
-  const dispatch = useDispatchCart();
-
-  const options = props.options;
+  const dispatch = useDispatch();
   const priceOptions = Object.keys(options);
-  const foodItem = props.foodItem;
-
   const finalPrice = qty * parseInt(options[size]);
 
   useEffect(() => {
-    setSize(priceref.current.value);
+    setSize(priceRef.current?.value || priceOptions[0]);
+    setToken(Cookies.get('authToken'));
   }, []);
 
-  const handleAddToCart = async () => {
-    if (!localStorage.getItem('authToken')) {
-      // If not logged in, show login modal
-      props.onOpen();
+  const handleAddToCart = () => {
+    if (!token) {
+      dispatch(openLogin());
       return;
     }
 
-    await dispatch({
-      type: 'ADD',
-      item: {
+    dispatch(
+      addToCart({
         _id: foodItem._id,
         name: foodItem.name,
-        qty: qty,
-        size: size,
-        price: finalPrice,
         img: foodItem.img,
-      },
-    });
+        qty,
+        size,
+        price: finalPrice,
+      })
+    );
   };
 
   return (
@@ -58,23 +56,23 @@ function Card(props) {
 
         {/* Description */}
         <p className="text-gray-600 text-sm mb-4">
-          A delicious option for your next meal. Choose your size and quantity below.
+          Choose your preferred size and quantity to enjoy this delicious dish.
         </p>
 
-        {/* Quantity and Size Selector */}
+        {/* Quantity & Size Selector */}
         <div className="flex items-center justify-between mb-4">
-          {/* Quantity Buttons */}
+          {/* Quantity */}
           <div className="flex items-center gap-2">
             <button
-              className="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
-              onClick={() => setQty((prevQty) => Math.max(prevQty - 1, 1))}
+              className="w-8 h-8 bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
+              onClick={() => setQty((prev) => Math.max(1, prev - 1))}
             >
               <i className="fa-solid fa-minus"></i>
             </button>
             <span className="font-medium text-gray-800">{qty}</span>
             <button
-              className="w-8 h-8 flex items-center justify-center bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
-              onClick={() => setQty((prevQty) => prevQty + 1)}
+              className="w-8 h-8 bg-emerald-500 text-white rounded-full hover:bg-emerald-600"
+              onClick={() => setQty((prev) => prev + 1)}
             >
               <i className="fa-solid fa-plus"></i>
             </button>
@@ -82,13 +80,14 @@ function Card(props) {
 
           {/* Size Dropdown */}
           <select
-            className="bg-emerald-500 text-white text-sm px-3 py-2 rounded-md outline-none hover:bg-emerald-600 cursor-pointer"
-            ref={priceref}
+            className="bg-emerald-500 text-white text-sm px-3 py-2 rounded-md hover:bg-emerald-600"
+            ref={priceRef}
+            value={size}
             onChange={(e) => setSize(e.target.value)}
           >
-            {priceOptions.map((data) => (
-              <option key={data} value={data}>
-                {data}
+            {priceOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
@@ -99,12 +98,12 @@ function Card(props) {
           ₹{finalPrice}/-
         </div>
 
-        {/* Action Button */}
+        {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
           className="w-full py-2 bg-emerald-600 text-white font-medium rounded-full hover:bg-emerald-700 transition"
         >
-          Add To Cart
+          Add to Cart
         </button>
       </div>
     </div>

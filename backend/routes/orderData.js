@@ -1,37 +1,43 @@
 import express from 'express';
+import Order from '../models/Orders.js';
+import jwt from 'jsonwebtoken';
+
 const router = express.Router();
-import Order from '../models/Orders.js'
 
-router.post("/orderdata", async (req, res)=>  {
-    let data = req.body.orderData;
-    // await data.slice(0, 0, {orderDate : req.body.orderDate})
+router.post("/orderdata", async (req, res) => {
+  const { orderData } = req.body;
+  const authHeader = req.headers.authorization;
 
-    // console.log("This is the User Email : ", req.body.email)
-    let emailId = await Order.findOne({email : req.body.email})
-    console.log(emailId)
-    if(emailId == null)  {
-        try {
-            await Order.create({
-                email: req.body.email,
-                orderData: [data]
-            }).then(()=>{
-                res.json({success: true});
-            })
-        } catch (error) {
-            console.log("orderData.js line 21",error.message);
-            res.send("Server error", error.message)
-        }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Authorization header missing or malformed" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const emailId = decoded.user.email;
+
+    const existingOrder = await Order.findOne({ email: emailId });
+
+    if (!existingOrder) {
+      await Order.create({
+      email: emailId,
+      orderData: orderData  
+    });
+
+    } else {
+        await Order.findOneAndUpdate(
+        { email: emailId },
+        { $push: { orderData: { $each: orderData } } }
+    );
     }
-    else {
-        try {
-            await Order.findOneAndUpdate({email: req.body.email},
-            { $push:{orderData: data}}).then(()=>{
-                res.json({success: true})
-            })
-        } catch (error) {
-            res.send("Server Error", error.message)
-        }
-    }
-})
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("orderData.js:", error.message);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
 
 export default router;

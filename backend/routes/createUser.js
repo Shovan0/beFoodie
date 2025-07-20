@@ -4,7 +4,6 @@ import User from '../models/User.js'
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-const jwtSecret = "abcdefghijklmnopqrstuvwxyzabcdef"
 
 router.post("/createuser"
 ,
@@ -43,6 +42,7 @@ body('email').custom(async value => {
 router.post("/login",
 [body("email","Email is not valid").isEmail()],
 async (req, res, next)=>{
+    const jwtSecret = process.env.JWT_SECRET;
     const error = validationResult(req);
     if(!error.isEmpty())  {
         return res.status(400).json({ errors:error.array() })
@@ -59,7 +59,8 @@ async (req, res, next)=>{
         }
         const data = {
             user:{
-                id:userData.id
+                id:userData.id,
+                email:userData.email
             }
         }
         const authToken = jwt.sign(data, jwtSecret)

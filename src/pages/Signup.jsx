@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { openLogin, openSignup, closeModals } from '../features/modalSlice';
 
 function Signup({onClose , onOpen}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [details, setDetails] = useState({ name: '', email: '', password: '', location: '' });
 
   const handleSubmit = async (e) => {
@@ -16,12 +18,12 @@ function Signup({onClose , onOpen}) {
         password: details.password,
         location: details.location
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (!response.data.success) {
         alert("Enter valid credentials");
       }
       else {
-        onClose();
+        dispatch(closeModals());
       }
     } catch (error) {
       console.error("Error:", error);
@@ -46,7 +48,7 @@ function Signup({onClose , onOpen}) {
         >
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => dispatch(closeModals())}
             className="absolute top-3 right-3 text-gray-400 hover:text-red-500"
           >
             <i className="fa-solid fa-xmark text-xl"></i>
@@ -124,7 +126,9 @@ function Signup({onClose , onOpen}) {
               Submit
             </button>
             <Link
-              onClick={onOpen}
+              onClick={() => {
+                dispatch(openLogin());
+              }}
               className="text-sm text-gray-600 hover:text-emerald-600 hover:underline"
             >
               Already a user?

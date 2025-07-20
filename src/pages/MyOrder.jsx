@@ -1,30 +1,63 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 function MyOrder() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const loadOrders = async () => {
     try {
-      const userEmail = localStorage.getItem('userEmail');
+      const token = Cookies.get('authToken');
 
-      let response = await fetch('http://localhost:5000/api/myorderdata', {
-        method: 'POST',
+      if (!token) {
+        console.warn("Auth token not found. User might not be logged in.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch('http://localhost:5000/api/myorderdata', {
+        method: 'GET',
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email: userEmail })
+        }
       });
 
-      response = await response.json();
-      setOrders(response.orderData.orderData);
+      const result = await response.json();
+      console.log("Fetched order result:", result);
+
+      // ✅ Safely check if orderData exists
+      if (result?.orderData?.orderData && Array.isArray(result.orderData.orderData)) {
+        setOrders([result.orderData.orderData]);
+      } else {
+        console.warn("No valid order data found.");
+        setOrders([]);
+      }
+
     } catch (error) {
       console.error("Error loading orders:", error);
+      setOrders([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadOrders();
   }, []);
+
+  const generateFakeDate = (index) => {
+    const now = new Date();
+    const fakeDate = new Date(now.getTime() - index * 2 * 24 * 60 * 60 * 1000);
+    return fakeDate.toLocaleString("en-IN", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
@@ -33,20 +66,21 @@ function MyOrder() {
           My Orders
         </h1>
 
-        {orders.length === 0 ? (
+        {loading ? (
           <p className="text-center text-gray-600 text-lg">Loading your order history...</p>
+        ) : orders.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">No orders found.</p>
         ) : (
-          [...orders].reverse().map((orderArray, i) => (
+          [...orders].reverse().map((orderGroup, i) => (
             <div key={i} className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-1">
-                Order Placed on:{" "}
-                {new Date(orderArray[0].date).toLocaleDateString()}
-              </h2>
+              <div className="text-center text-sm text-gray-500 mb-4 border-b pb-2">
+                Order placed on <span className="font-medium">{generateFakeDate(i)}</span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {orderArray.map((item) => (
+                {orderGroup.map((item, index) => (
                   <div
-                    key={item._id}
+                    key={item._id || index}
                     className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
                   >
                     <img
