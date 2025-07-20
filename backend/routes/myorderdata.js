@@ -2,26 +2,13 @@ import express from 'express';
 const router = express.Router();
 import jwt from 'jsonwebtoken';
 import Order from '../models/Orders.js';
+import { verifyToken } from '../middlewares/verifyToken.js';
 
 const JWT_SECRET = process.env.JWT_SECRET; 
 
-router.get("/myorderdata", async (req, res) => {
+router.get("/myorderdata",verifyToken, async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ error: "Authorization header missing or malformed" });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    let decoded;
-    try {
-      decoded = jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({ error: "Invalid or expired token" });
-    }
-
-    const userEmail = decoded.user.email;
+    const userEmail = req.user.user.email;
     if (!userEmail) {
       return res.status(400).json({ error: "Email not found in token" });
     }

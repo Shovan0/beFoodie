@@ -4,6 +4,7 @@ import createUserRouter from './routes/createUser.js'
 import displayDataRouter from './routes/displayData.js'
 import orderRouter from './routes/orderData.js'
 import myOrderData from './routes/myorderdata.js'
+import cartData from './routes/cartData.js'
 import { config } from 'dotenv'
 import Razorpay from 'razorpay'
 import paymentRoute from './routes/paymentRoutes.js'
@@ -34,7 +35,8 @@ app.use('/api', createUserRouter);
 app.use('/api', displayDataRouter);
 app.use('/api', orderRouter);
 app.use('/api', myOrderData);
-app.use("/api", paymentRoute)
+app.use("/api", paymentRoute);
+app.use("/api", cartData);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
