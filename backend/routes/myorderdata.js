@@ -1,6 +1,5 @@
 import express from 'express';
 const router = express.Router();
-import jwt from 'jsonwebtoken';
 import Order from '../models/Orders.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 
