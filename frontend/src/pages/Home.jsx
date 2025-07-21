@@ -5,10 +5,11 @@ import Card from '../components/Card';
 function Navbar() {
   const [foodItem, setFoodItem] = useState([]);
   const [foodCategory, setFoodCategory] = useState([]);
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const loadData = async () => {
     try {
-      let response = await fetch("http://localhost:5000/api/fooddata", {
+      let response = await fetch(`${BASE}/api/fooddata`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -17,7 +18,6 @@ function Navbar() {
       response = await response.json();
       setFoodItem(response[0]);
       setFoodCategory(response[1]);
-      // console.log(response[1]);
       } 
       catch (error) {
         console.error("Error loading data:", error);

@@ -12,6 +12,7 @@ function Card({ foodItem, options, onOpen }) {
   const priceOptions = Object.keys(options);
   const finalPrice = qty * parseInt(options[size] || 0);
   const cartCount = useSelector((state) => state.cart.count);
+  const BASE = import.meta.env.VITE_BACKEND_URL;;
 
   useEffect(() => {
     setSize(priceRef.current?.value || priceOptions[0]);
@@ -25,7 +26,7 @@ function Card({ foodItem, options, onOpen }) {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/addToCart", {
+      const response = await fetch(`${BASE}/api/addToCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

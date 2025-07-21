@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
-import { decrementCart, clearCart, setCartCount } from '../features/cartSlice'; // adjust path as needed
+import { decrementCart, clearCart, setCartCount } from '../features/cartSlice';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]); 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const token = Cookies.get("authToken");
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const fetchCart = async () => {
   try {
-    const response = await fetch("http://localhost:5000/api/getCart", {
+    const response = await fetch(`${BASE}/api/getCart`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -44,7 +45,7 @@ function Cart() {
 
   const handleRemove = async (index) => {
     try {
-      const response = await fetch("http://localhost:5000/api/removeFromCart", {
+      const response = await fetch(`${BASE}/api/removeFromCart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +66,7 @@ function Cart() {
 
   const handleClearCart = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/clearCart", {
+      const response = await fetch(`${BASE}/api/clearCart`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,14 +85,14 @@ function Cart() {
 
   const handleCheckOut = async () => {
     try {
-      const checkoutResponse = await fetch("http://localhost:5000/api/checkout", {
+      const checkoutResponse = await fetch(`${BASE}/api/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ totalPrice })
       });
 
       const { order } = await checkoutResponse.json();
-      const keyResponse = await fetch("http://localhost:5000/api/getkey");
+      const keyResponse = await fetch(`${BASE}/api/getkey`);
       const { key } = await keyResponse.json();
 
       const options = {
@@ -101,7 +102,7 @@ function Cart() {
         name: "Shovan Nath",
         description: `You have ordered food worth ₹${totalPrice}`,
         order_id: order.id,
-        callback_url: "http://localhost:5000/api/paymentverification",
+        callback_url: `${BASE}/api/paymentverification`,
         prefill: {
           name: "You",
           email: "gaurav.kumar@example.com",
@@ -121,7 +122,7 @@ function Cart() {
       });
       razor.open();
 
-      const orderResponse = await fetch("http://localhost:5000/api/orderdata", {
+      const orderResponse = await fetch(`${BASE}/api/orderdata`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,

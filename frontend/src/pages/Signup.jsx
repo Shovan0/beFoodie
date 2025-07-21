@@ -8,11 +8,12 @@ function Signup({onClose , onOpen}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [details, setDetails] = useState({ name: '', email: '', password: '', location: '' });
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/createuser", {
+      const response = await axios.post(`${BASE}/api/createuser`, {
         name: details.name,
         email: details.email,
         password: details.password,

@@ -7,6 +7,7 @@ import { openLogin, openSignup, closeModals } from '../features/modalSlice';
 function Login() {
   const dispatch = useDispatch();
   const modalRef = useRef();
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const [details, setDetails] = useState({
     email: '',
@@ -30,7 +31,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post(`${BASE}/api/login`, {
         email: details.email,
         password: details.password
       });

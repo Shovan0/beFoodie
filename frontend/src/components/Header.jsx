@@ -15,6 +15,7 @@ function Header() {
   const showLogin = useSelector((state) => state.modal.showLogin);
   const showSignup = useSelector((state) => state.modal.showSignup);
   const cartCount = useSelector((state) => state.cart.count);
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
   const [cartView, setCartView] = useState(false);
@@ -28,7 +29,7 @@ function Header() {
    useEffect(() => {
     const fetchCartCount = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/cartCount", {
+        const res = await fetch(`${BASE}/api/cartCount`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

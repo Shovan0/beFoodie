@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 function MyOrder() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   const loadOrders = async () => {
     try {
@@ -15,7 +16,7 @@ function MyOrder() {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/myorderdata', {
+      const response = await fetch(`${BASE}/api/myorderdata`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
