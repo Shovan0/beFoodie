@@ -2,17 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { incrementCart } from '../features/cartSlice';
+import { openLogin } from '../features/modalSlice'; // 👈 import modal action
 
-
-function Card({ foodItem, options, onOpen }) {
+function Card({ foodItem, options }) {
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('');
   const priceRef = useRef();
   const dispatch = useDispatch();
   const priceOptions = Object.keys(options);
   const finalPrice = qty * parseInt(options[size] || 0);
-  const cartCount = useSelector((state) => state.cart.count);
-  const BASE = import.meta.env.VITE_BACKEND_URL;;
+  const BASE = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     setSize(priceRef.current?.value || priceOptions[0]);
@@ -21,33 +20,32 @@ function Card({ foodItem, options, onOpen }) {
   const handleAddToCart = async () => {
     const token = Cookies.get('authToken');
     if (!token) {
-      if (onOpen) onOpen(); 
+      dispatch(openLogin());
       return;
     }
 
     try {
       const response = await fetch(`${BASE}/api/addToCart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: foodItem.name,
-        qty,
-        size,
-        price: finalPrice,
-      }),
-    });
-    
-    const data = await response.json();
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: foodItem.name,
+          qty,
+          size,
+          price: finalPrice,
+        }),
+      });
 
-    if (data.success) {
-    dispatch(incrementCart()); 
-    } else {
-    alert('Something went wrong while adding to cart');
-    }
+      const data = await response.json();
 
+      if (data.success) {
+        dispatch(incrementCart());
+      } else {
+        alert('Something went wrong while adding to cart');
+      }
     } catch (error) {
       console.error(error);
       alert('Error adding item to cart.');
