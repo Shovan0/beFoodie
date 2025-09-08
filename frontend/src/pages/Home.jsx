@@ -55,10 +55,8 @@ function Home() {
       const matched = Array.from(new Set([...matchedCategory, ...matchedByFood]));
       const others = foodCategory.filter((cat) => !matched.includes(cat));
 
-      // ✅ instead of removing, we just reorder: matched first, then others
       return [...matched, ...others];
     }
-
 
     if (selectedCategory) {
       const clicked = foodCategory.filter(
@@ -99,10 +97,13 @@ function Home() {
       <div className="flex flex-wrap justify-center gap-6 my-10">
         {foodCategory && foodCategory.length > 0 ? (
           getReorderedCategories().map((category, index) => (
-            <FoodCategory key={index} category={category} onClick={handleCategoryClick} />
+            <FoodCategory
+              key={index}
+              category={category}
+              onClick={handleCategoryClick}
+            />
           ))
         ) : (
-
           <div className="text-center">No categories found</div>
         )}
       </div>
@@ -111,7 +112,6 @@ function Home() {
         {foodCategory && foodCategory.length > 0 ? (
           getReorderedCategories().map((category, index) => (
             <div key={index} className="my-6">
-
               <div className="text-center text-2xl font-bold mb-4">
                 {category.CategoryName}
               </div>
@@ -119,16 +119,7 @@ function Home() {
               <div className="flex flex-wrap justify-center gap-6">
                 {foodItem && foodItem.length > 0 ? (
                   foodItem
-                    .filter(
-                      (item) =>
-                        item.CategoryName === category.CategoryName &&
-                        (search
-                          ? item.name.toLowerCase().includes(search.toLowerCase()) ||
-                          category.CategoryName.toLowerCase().includes(
-                            search.toLowerCase()
-                          )
-                          : true)
-                    )
+                    .filter((item) => item.CategoryName === category.CategoryName)
                     .map((filterItem) => (
                       <div
                         key={filterItem._id}
