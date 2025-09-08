@@ -1,0 +1,22 @@
+[
+  { 
+    "CategoryName": "Pizza", 
+    "image": "https://www.creativefabrica.com/product/pizza-icon-16/" 
+  },
+  { 
+    "CategoryName": "Biryani/Rice", 
+    "image": "https://media.istockphoto.com/id/1500822370/vector/biryani-icon-in-vector-logotype.jpg?s=1024x1024&w=is&k=20&c=x7d5eBl62Eq6XRvv5whQIOhZRbh2wL0SfDmD0UR-UuM=" 
+  },
+  { 
+    "CategoryName": "Starter", 
+    "image": "https://www.shutterstock.com/image-vector/starters-appetizers-thin-line-icon-260nw-2108338319.jpg" 
+  },
+  { 
+    "CategoryName": "Drinks", 
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIQC_DiNLgDuReBK9w0WldkfcR8WyzW9Vyw&s" 
+  },
+  { 
+    "CategoryName": "Dessert", 
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlK8MmJDBKs3ymMcix18j_KMb3gbu0R-X46A&s"
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Prawns Fried Rice",
+    "img": "https://cdn.pixabay.com/photo/2018/03/23/08/27/thai-fried-rice-3253027__340.jpg",
+    "options": [{ "half": "120", "full": "220" }],
+    "description": "Made using Indian masalas and Basmati rice. Barbequed pieces of Prawns mixed with fried rice."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Veg Fried Rice",
+    "img": "https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dmVnJTIwZnJpZWQlMjByaWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    "options": [{ "half": "110", "full": "200" }],
+    "description": "Simple and flavorful fried rice made with fresh vegetables and Indian spices."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Fish Biryani",
+    "img": "https://media.istockphoto.com/photos/king-fish-biryani-with-raita-served-in-a-golden-dish-isolated-on-dark-picture-id1409942571?b=1&k=20&m=1409942571&s=170667a&w=0&h=ozlMJf5hsDmS2sSdEdBWnoSZOEITef4qGMeWeq2lyTc=",
+    "options": [{ "half": "200", "full": "320" }],
+    "description": "Aromatic basmati rice layered with spicy fish masala cooked in traditional style."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Chicken Fried Rice",
+    "img": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpY2tlbiUyMGZyaWVkJTIwcmljZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    "options": [{ "half": "130", "full": "220" }],
+    "description": "Classic fried rice with tender chicken pieces and mild spices."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Veg Biryani",
+    "img": "https://holycowvegan.net/wp-content/uploads/2023/01/veg-biryani-21.jpg",
+    "options": [{ "half": "150", "full": "260" }],
+    "description": "Aromatic basmati rice cooked with seasonal vegetables and spices."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Chicken Biryani",
+    "img": "https://cdn.pixabay.com/photo/2019/11/04/12/16/rice-4601049__340.jpg",
+    "options": [{ "half": "170", "full": "300" }],
+    "description": "Hyderabadi-style chicken biryani slow-cooked with layers of rice and chicken."
+  },
+  {
+    "CategoryName": "Biryani/Rice",
+    "name": "Mutton Biryani",
+    "img": "https://www.chefkunalkapur.com/wp-content/uploads/2021/03/Gosht-Biryani-1300x868.jpeg?v=1625193165",
+    "options": [{ "half": "220", "full": "380" }],
+    "description": "Fragrant biryani made with succulent mutton pieces and saffron-flavored rice."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Paneer Tikka",
+    "img": "https://as2.ftcdn.net/v2/jpg/14/81/77/57/1000_F_1481775703_wuwGwp5zKcpsmXccpNx5N3kaWlLeDkK4.jpg",
+    "options": [{ "half": "170", "full": "250" }],
+    "description": "Chunks of paneer marinated in spices and grilled to perfection."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Paneer 65",
+    "img": "https://as1.ftcdn.net/v2/jpg/02/89/79/00/1000_F_289790056_XK0szVbvBbtwbpxyktPavVpZ1J4rpvZD.jpg",
+    "options": [{ "half": "150", "full": "260" }],
+    "description": "Crispy fried paneer cubes tossed in a spicy tangy sauce."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Chilli Paneer",
+    "img": "https://as2.ftcdn.net/v2/jpg/16/22/46/83/1000_F_1622468332_5xVOTRlFcV11C9x0WG0Ofp1y6sBVffnk.jpg",
+    "options": [{ "half": "120", "full": "200" }],
+    "description": "Paneer cubes stir-fried with bell peppers, onions, and spicy sauces."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Chicken Tikka",
+    "img": "https://www.shutterstock.com/image-photo/deliciously-spiced-chicken-tikka-kabab-600nw-2495838045.jpg",
+    "options": [{ "half": "170", "full": "300" }],
+    "description": "Boneless chicken pieces marinated in yogurt and spices, grilled in tandoor."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Veg Spring Rolls",
+    "img": "https://media.istockphoto.com/id/1070157508/photo/deep-fried-spring-rolls.jpg?s=2048x2048&w=is&k=20&c=9d4bXJIVjN6IZUhQ2AKeWxdTlAORh0WBeyK2jCt_ttw=",
+    "options": [{ "plate": "140" }],
+    "description": "Crispy rolls stuffed with sautéed vegetables, served with spicy dip."
+  },
+  {
+    "CategoryName": "Starter",
+    "name": "Chicken Lollipop",
+    "img": "https://media.istockphoto.com/id/1261880308/photo/honey-garlic-lollipop-chicken-wings-with-carrots-celery-and-ranch-dip.jpg?s=2048x2048&w=is&k=20&c=zGDgUVBseU5virgS6VGTMh8nspixbBJPBY_TTyPwYIg=",
+    "options": [{ "half": "160", "full": "280" }],
+    "description": "Crispy fried chicken wings coated with spicy batter."
+  },
+  {
+    "CategoryName": "Pizza",
+    "name": "Mix Veg Pizza",
+    "img": "https://foods.qmanja.com/MenuImages/Menu5114-Mix-veg-pizza.jpg.png",
+    "options": [{ "regular": "100", "medium": "200", "large": "300" }],
+    "description": "Loaded with fresh veggies and cheese on a soft crust."
+  },
+  {
+    "CategoryName": "Pizza",
+    "name": "Chicken Cheese Pizza",
+    "img": "https://www.sargento.com/assets/Uploads/Recipe/Image/TuscanChikPizza_010__FillWzgwMCw4MDBd.jpg",
+    "options": [{ "regular": "120", "medium": "230", "large": "350" }],
+    "description": "Topped with juicy chicken and extra cheese."
+  },
+  {
+    "CategoryName": "Pizza",
+    "name": "Margherita Pizza",
+    "img": "https://api.pizzahut.io/v1/content/en-in/in-1/images/pizza/margherita.5f4ef870fb437d0f7e82360758641f2b.1.jpg",
+    "options": [{ "regular": "90", "medium": "170", "large": "250" }],
+    "description": "Classic pizza topped with tomato sauce, mozzarella cheese, and basil."
+  },
+  {
+    "CategoryName": "Pizza",
+    "name": "Pepperoni Pizza",
+    "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2f38jmDq8OZhG72KpH345LC9teABsdTXrqg&s",
+    "options": [{ "regular": "150", "medium": "260", "large": "380" }],
+    "description": "Cheesy pizza topped with spicy pepperoni slices."
+  },
+  {
+    "CategoryName": "Dessert",
+    "name": "Gulab Jamun",
+    "img": "https://prashantcorner.com/cdn/shop/files/DakGulabJamunSR-2.jpg?v=1718083866",
+    "options": [{ "piece": "30", "plate": "100" }],
+    "description": "Soft fried milk solids soaked in sugar syrup."
+  },
+  {
+    "CategoryName": "Dessert",
+    "name": "Chocolate Brownie",
+    "img": "https://icecreambakery.in/wp-content/uploads/2024/12/Brownie-Recipe-with-Cocoa-Powder-821x821.jpg",
+    "options": [{ "piece": "80", "withIceCream": "130" }],
+    "description": "Rich and fudgy chocolate brownie served warm."
+  },
+  {
+    "CategoryName": "Dessert",
+    "name": "Ice Cream Sundae",
+    "img": "https://ticktocktea.com/cdn/shop/articles/Ice-Cream-Sundae-800x800px-min.jpg?v=1657010846",
+    "options": [{ "single": "90", "double": "150" }],
+    "description": "A scoop (or two) of ice cream topped with nuts and chocolate syrup."
+  },
+  {
+    "CategoryName": "Drinks",
+    "name": "Coca Cola",
+    "img": "https://m.media-amazon.com/images/I/61cbNqP4Z2L._UF894,1000_QL80_.jpg",
+    "options": [{ "can": "40", "bottle": "60" }],
+    "description": "Chilled soft drink."
+  },
+  {
+    "CategoryName": "Drinks",
+    "name": "Fresh Lime Soda",
+    "img": "https://rajasthanimisthanbhandar.com/wp-content/uploads/2024/09/1-768x768.webp",
+    "options": [{ "sweet": "50", "salty": "50", "mixed": "60" }],
+    "description": "Refreshing soda drink with fresh lime juice."
+  },
+  {
+    "CategoryName": "Drinks",
+    "name": "Cold Coffee",
+    "img": "https://www.cookwithmanali.com/wp-content/uploads/2022/04/Cold-Coffee-500x500.jpg",
+    "options": [{ "glass": "90" }],
+    "description": "Chilled coffee with milk and ice cubes."
+  },
+  {
+    "CategoryName": "Drinks",
+    "name": "Mojito",
+    "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW4iJUyW0vvlshQsEvVNGgDcDv3rCumaIoiQ&s",
+    "options": [{ "glass": "120" }],
+    "description": "Classic mint-lime mojito with soda."
+  }
+]

@@ -11,7 +11,7 @@ import paymentRoute from './routes/paymentRoutes.js'
 import cors from 'cors'
 
 config({path : "./config/config.env"})
-mongo();  // Function from db.js
+mongo();  
 const app = express();
 
 export const instance = new Razorpay({
