@@ -1,5 +1,6 @@
 import express from 'express'
 import mongo from './db.js'
+import mongoose from 'mongoose'
 import createUserRouter from './routes/createUser.js'
 import displayDataRouter from './routes/displayData.js'
 import orderRouter from './routes/orderData.js'
@@ -13,7 +14,28 @@ import cookieParser from 'cookie-parser'
 
 import addressRoute from './routes/address.js'
 config({path : "./config/config.env"})
-mongo();  
+// connect to MongoDB and run a small migration to remove any accidental unique index on orders.email
+mongo().then(async () => {
+    try {
+        const coll = mongoose.connection.db.collection('orders');
+        const indexes = await coll.indexes();
+        for (const idx of indexes) {
+            if (idx.key && idx.key.email === 1 && idx.unique) {
+                await coll.dropIndex(idx.name);
+                console.log('Dropped unique index on orders.email:', idx.name);
+            }
+        }
+    } catch (err) {
+        // If the collection doesn't exist yet, ignore the error
+        if (err && err.codeName === 'NamespaceNotFound') {
+            console.log('orders collection not found yet; skipping index migration');
+        } else {
+            console.error('Index migration error (non-fatal):', err);
+        }
+    }
+}).catch(err => {
+    console.error('Mongo connect error during index migration:', err);
+});
 const app = express();
 import instance from './razorpayClient.js'
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';

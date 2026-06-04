@@ -18,11 +18,10 @@ function MyOrder() {
       const response = await fetch(`${BASE}/api/myorderdata`, { method: 'GET', credentials: 'include' });
 
       const result = await response.json();
-
-      if (result?.orderData?.orderData && Array.isArray(result.orderData.orderData)) {
-        setOrders([result.orderData.orderData]);
+      if (result?.orders && Array.isArray(result.orders)) {
+        setOrders(result.orders);
       } else {
-        console.warn("No valid order data found.");
+        console.warn('No valid order data found.');
         setOrders([]);
       }
 
@@ -63,14 +62,19 @@ function MyOrder() {
         ) : orders.length === 0 ? (
           <p className="text-center text-gray-500 text-lg">No orders found.</p>
         ) : (
-          [...orders].reverse().map((orderGroup, i) => (
-            <div key={i} className="mb-10">
-              <div className="text-center text-sm text-gray-500 mb-4 border-b pb-2">
-                Order placed on <span className="font-medium">{generateFakeDate(i)}</span>
+          orders.map((order, i) => (
+            <div key={order._id || i} className="mb-10">
+              <div className="flex items-center justify-between mb-4 border-b pb-2">
+                <div className="text-sm text-gray-500">
+                  Order placed on <span className="font-medium">{new Date(order.orderDate).toLocaleString()}</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-gray-600">Amount: <span className="font-medium">₹{order.amount ?? order.orderData.reduce((s,it)=>s+(it.price||0),0)}</span></span>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {orderGroup.map((item, index) => (
+                {(order.orderData || []).map((item, index) => (
                   <div
                     key={item._id || index}
                     className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
@@ -93,6 +97,9 @@ function MyOrder() {
                       </p>
                       <p className="text-sm text-gray-600">
                         Price: ₹<span className="font-medium">{item.price}</span>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-2">
+                        Payment ID: <span className="font-medium text-sm">{item.paymentId || order.paymentId || '—'}</span>
                       </p>
                     </div>
                   </div>

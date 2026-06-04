@@ -133,7 +133,33 @@ function Cart() {
         name: 'beFoodie',
         description: `You have ordered food worth ₹${totalPrice}`,
         order_id: order.id,
-        callback_url: `${BASE}/api/paymentverification`,
+        handler: async function (response) {
+          try {
+            // send verification to backend
+            const verifyRes = await fetch(`${BASE}/api/paymentverification`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response),
+            });
+
+            const json = await verifyRes.json();
+            if (json && json.success) {
+              // refresh cart and UI
+              await fetchCart();
+              dispatch(clearCart());
+              toast.success('Payment successful');
+              window.location.href = `/payment-result?status=success&reference=${json.reference}`;
+            } else {
+              toast.error('Payment verification failed');
+              window.location.href = `/payment-result?status=failed`;
+            }
+          } catch (err) {
+            console.error('Verification error', err);
+            toast.error('Payment verification error');
+            window.location.href = `/payment-result?status=failed`;
+          }
+        },
         prefill: {
           name: 'You',
           email: userEmail || '',

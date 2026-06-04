@@ -19,16 +19,8 @@ export const createOrder = async (req, res) => {
       })
     );
 
-    const existingOrder = await Order.findOne({ email: emailId });
-
-    if (!existingOrder) {
-      await Order.create({ email: emailId, orderData: enrichedOrderData });
-    } else {
-      await Order.findOneAndUpdate(
-        { email: emailId },
-        { $push: { orderData: { $each: enrichedOrderData } } }
-      );
-    }
+    // Create a new order document for this checkout (unpaid until payment verification)
+    await Order.create({ email: emailId, orderData: enrichedOrderData, paid: false });
 
     return res.json({ success: true });
   } catch (error) {
@@ -43,12 +35,8 @@ export const getUserOrders = async (req, res) => {
     if (!userEmail) {
       return res.status(400).json({ error: 'Email not found in token' });
     }
-    const orderData = await Order.findOne({ email: userEmail }).select('orderData');
-    if (orderData) {
-      return res.json({ orderData });
-    } else {
-      return res.json({ msg: 'No order data found' });
-    }
+    const orders = await Order.find({ email: userEmail }).sort({ orderDate: -1 });
+    return res.json({ orders });
   } catch (error) {
     console.error('orderController.getUserOrders:', error);
     return res.status(500).json({ error: 'Internal server error' });
