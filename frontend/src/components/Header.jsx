@@ -5,9 +5,9 @@ import Cart from '../pages/Cart';
 import { openLogin, openSignup, closeModals } from '../features/modalSlice';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCartCount } from '../features/cartSlice'; 
+import { setCartCount } from '../features/cartSlice';
+import { clearUserEmail } from '../features/userSlice';
 
 
 function Header() {
@@ -20,45 +20,48 @@ function Header() {
   const navigate = useNavigate();
   const [cartView, setCartView] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const token = Cookies.get('authToken');
+  const userEmail = useSelector((state) => state.user.email);
 
-  const handleLogout = () => {
-    Cookies.remove('authToken');
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${BASE}/api/logout`, { method: 'POST', credentials: 'include' });
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+    dispatch(clearUserEmail());
+    navigate('/');
   };
 
    useEffect(() => {
     const fetchCartCount = async () => {
       try {
         const res = await fetch(`${BASE}/api/cartCount`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          method: 'GET',
+          credentials: 'include',
         });
 
         const data = await res.json();
         if (data.success) {
-          dispatch(setCartCount(data.count));  
+          dispatch(setCartCount(data.count));
         } else {
-          dispatch(setCartCount(0));         
+          dispatch(setCartCount(0));
         }
       } catch (err) {
-        console.error("Failed to fetch cart count", err);
-        dispatch(setCartCount(0));            
+        console.error('Failed to fetch cart count', err);
+        dispatch(setCartCount(0));
       }
     };
 
-  if (token) fetchCartCount();
-}, [token, dispatch]);
+    if (userEmail) fetchCartCount();
+  }, [userEmail, dispatch]);
 
 
   return (
     <>
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-3 md:py-4">
-            <Link to="/" className="text-2xl font-semibold text-emerald-600 tracking-tight">
+          <div className="flex justify-between items-center h-[64px] md:h-auto py-0 md:py-4">
+            <Link to="/" className="text-2xl sm:text-3xl font-semibold text-emerald-600 tracking-tight leading-none">
               beFoodie
             </Link>
 
@@ -73,7 +76,7 @@ function Header() {
               >
                 Home
               </NavLink>
-              {token && (
+              {userEmail && (
                 <NavLink
                   to="/myorderdata"
                   className={({ isActive }) =>
@@ -100,7 +103,7 @@ function Header() {
             {/* Mobile menu button */}
             <div className="md:hidden">
               <button
-                className="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+                className="p-3 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
                 onClick={() => setMobileOpen((s) => !s)}
                 aria-label="Toggle menu"
               >
@@ -109,14 +112,14 @@ function Header() {
             </div>
 
             <div className="flex items-center gap-3">
-            {token ? (
+            {userEmail ? (
               <div className="flex items-center gap-4">
                 <Link
                   to="/cart"
-                  className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 border border-emerald-600 rounded-full text-emerald-600 hover:bg-emerald-50"
+                  className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 border border-emerald-600 rounded-full text-emerald-600 hover:bg-emerald-50 text-sm"
                 >
-                  <i className="fa-solid fa-cart-shopping"></i>
-                  <span>{cartCount}</span> 
+                  <i className="fa-solid fa-cart-shopping text-lg"></i>
+                  <span className="ml-1 text-sm font-semibold">{cartCount}</span>
                 </Link>
 
                   {cartView && (
@@ -127,7 +130,7 @@ function Header() {
 
                   <button
                     onClick={handleLogout}
-                    className="px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
+                    className="px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 text-sm"
                   >
                     Logout
                   </button>
@@ -208,7 +211,7 @@ function Header() {
                 Home
               </NavLink>
 
-              {token && (
+              {userEmail && (
                 <NavLink
                   to="/myorderdata"
                   onClick={() => setMobileOpen(false)}

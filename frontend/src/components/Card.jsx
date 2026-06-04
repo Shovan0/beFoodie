@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { incrementCart } from '../features/cartSlice';
 import { openLogin } from '../features/modalSlice'; // 👈 import modal action
 
@@ -17,20 +17,19 @@ function Card({ foodItem, options }) {
     setSize(priceRef.current?.value || priceOptions[0]);
   }, []);
 
+  const userEmail = useSelector((state) => state.user.email);
+
   const handleAddToCart = async () => {
-    const token = Cookies.get('authToken');
-    if (!token) {
+    if (!userEmail) {
       dispatch(openLogin());
       return;
     }
 
     try {
       const response = await fetch(`${BASE}/api/addToCart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: foodItem.name,
           qty,
@@ -44,12 +43,13 @@ function Card({ foodItem, options }) {
 
       if (data.success) {
         dispatch(incrementCart());
+        toast.success('Added to cart');
       } else {
-        alert('Something went wrong while adding to cart');
+        toast.error('Something went wrong while adding to cart');
       }
     } catch (error) {
       console.error(error);
-      alert('Error adding item to cart.');
+      toast.error('Error adding item to cart.');
     }
   };
 
@@ -58,11 +58,12 @@ function Card({ foodItem, options }) {
       <img
         src={foodItem.img}
         alt={foodItem.name}
-        className="w-full h-40 sm:h-44 md:h-48 object-cover rounded-t-2xl"
+        className="w-full h-44 sm:h-44 md:h-48 object-cover rounded-t-2xl"
+        onError={(e)=>{e.currentTarget.src = 'data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27300%27%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27%23f3f4f6%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%23959e9f%27 font-family=%27Arial, Helvetica, sans-serif%27 font-size=%2720%27%3ENo%20Image%3C/text%3E%3C/svg%3E'}}
       />
 
       <div className="p-5 flex-1 flex flex-col">
-        <h5 className="text-xl font-semibold text-gray-800 mb-2">
+        <h5 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
           {foodItem.name}
         </h5>
 

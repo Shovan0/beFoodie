@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLogin, openSignup, closeModals } from '../features/modalSlice';
+import { toast } from 'react-toastify';
+import { setUserEmail } from '../features/userSlice';
 
 function Login() {
   const dispatch = useDispatch();
@@ -23,14 +24,11 @@ function Login() {
   };
 
   useEffect(() => {
-    // mount animation
     setMounted(true);
 
-    // lock body scroll
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    // focus trap and ESC handler
     const focusableSelector = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])';
     const handleKey = (e) => {
       if (e.key === 'Escape') {
@@ -83,15 +81,20 @@ function Login() {
       const response = await axios.post(`${BASE}/api/login`, {
         email: details.email,
         password: details.password
-      });
+      }, { withCredentials: true });
 
       if (!response.data.success) {
-        alert('Enter valid credentials');
+        toast.error('Enter valid credentials');
         return;
       }
-      
-      Cookies.set('authToken', response.data.authToken, { expires: 7 });
 
+      // Retrieve current user info from server (cookie-based auth)
+      const me = await axios.get(`${BASE}/api/me`, { withCredentials: true });
+      if (me.data && me.data.success && me.data.user && me.data.user.email) {
+        dispatch(setUserEmail(me.data.user.email));
+      }
+
+      toast.success('Logged in successfully');
       dispatch(closeModals());
     } catch (error) {
       console.error('Login error:', error);

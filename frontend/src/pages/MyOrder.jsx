@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 function MyOrder() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const BASE = import.meta.env.VITE_BACKEND_URL;
+  const userEmail = useSelector((state) => state.user.email);
 
   const loadOrders = async () => {
     try {
-      const token = Cookies.get('authToken');
-
-      if (!token) {
-        console.warn("Auth token not found. User might not be logged in.");
+      if (!userEmail) {
+        console.warn('User not logged in.');
         setLoading(false);
         return;
       }
 
-      const response = await fetch(`${BASE}/api/myorderdata`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
+      const response = await fetch(`${BASE}/api/myorderdata`, { method: 'GET', credentials: 'include' });
 
       const result = await response.json();
-      // console.log("Fetched order result:", result);
 
       if (result?.orderData?.orderData && Array.isArray(result.orderData.orderData)) {
         setOrders([result.orderData.orderData]);
-        console.log("Orders set successfully:", result.orderData.orderData);
       } else {
         console.warn("No valid order data found.");
         setOrders([]);

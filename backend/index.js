@@ -9,22 +9,17 @@ import { config } from 'dotenv'
 import Razorpay from 'razorpay'
 import paymentRoute from './routes/paymentRoutes.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
+import addressRoute from './routes/address.js'
 config({path : "./config/config.env"})
 mongo();  
 const app = express();
 import instance from './razorpayClient.js'
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173"); // Updated to match your frontend port
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
-
-app.use(cors())
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 app.use('/api', createUserRouter);
@@ -33,6 +28,7 @@ app.use('/api', orderRouter);
 app.use('/api', myOrderData);
 app.use("/api", paymentRoute);
 app.use("/api", cartData);
+app.use('/api', addressRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

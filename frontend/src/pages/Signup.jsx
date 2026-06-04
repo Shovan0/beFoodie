@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLogin, openSignup, closeModals } from '../features/modalSlice';
+import { toast } from 'react-toastify';
 
 function Signup({onClose , onOpen}) {
   const navigate = useNavigate();
@@ -22,16 +23,16 @@ function Signup({onClose , onOpen}) {
         password: details.password,
         location: details.location
       });
-      // console.log(response.data);
+      
       if (!response.data.success) {
-        alert("Enter valid credentials");
-      }
-      else {
+        toast.error('Enter valid credentials');
+      } else {
+        toast.success('Account created successfully');
         dispatch(closeModals());
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while submitting the form");
+      toast.error('An error occurred while creating account');
     }
   };
 
