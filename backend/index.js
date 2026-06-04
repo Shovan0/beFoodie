@@ -38,9 +38,17 @@ mongo().then(async () => {
 });
 const app = express();
 import instance from './razorpayClient.js'
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    FRONTEND_URL
+  ],
+  credentials: true
+}));
+
+// app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
