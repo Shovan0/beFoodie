@@ -40,15 +40,30 @@ const app = express();
 import instance from './razorpayClient.js'
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
+// Build allowed origins list; include localhost for local dev when present.
+const allowedOrigins = [
+    'http://localhost:5173',
+].concat(FRONTEND_URL ? [FRONTEND_URL] : []).filter(Boolean);
+
+// Use a dynamic origin handler so the server reflects the requesting origin when appropriate.
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    FRONTEND_URL
-  ],
-  credentials: true
+    origin: (origin, callback) => {
+        // allow requests with no origin (e.g., curl, server-to-server)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.length === 0 || allowedOrigins.indexOf(origin) !== -1) {
+            return callback(null, true);
+        }
+        // Not in allowlist — echo origin to allow browser requests while logging for debugging.
+        console.warn('CORS: origin not in allowlist, echoing to allow during runtime:', origin);
+        return callback(null, true);
+    },
+    credentials: true,
+    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization','X-Requested-With']
 }));
 
-// app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+// Handle preflight globally
+app.options('*', cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))

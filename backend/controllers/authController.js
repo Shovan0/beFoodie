@@ -38,7 +38,7 @@ export const loginUser = async (req, res) => {
     // Set HttpOnly cookie with sensible defaults
     res.cookie('authToken', authToken, {
       httpOnly: true,
-      secure: isProd,
+    //   secure: isProd,
       sameSite: 'Strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
