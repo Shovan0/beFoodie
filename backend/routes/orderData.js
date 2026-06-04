@@ -9,19 +9,32 @@ router.post("/orderdata", verifyToken, async (req, res) => {
   const emailId = req.user.user.email;
 
   try {
+    // Ensure each order item has an img field; if missing, try to lookup
+    const enrichedOrderData = await Promise.all(
+      (orderData || []).map(async (item) => {
+        if (item.img) return item;
+        try {
+          const found = await Order.db.db.collection('food_items').findOne({ name: item.name });
+          const img = found && (found.img || found.image) ? (found.img || found.image) : null;
+          return { ...item, img };
+        } catch (e) {
+          return item;
+        }
+      })
+    );
+
     const existingOrder = await Order.findOne({ email: emailId });
 
     if (!existingOrder) {
       await Order.create({
-      email: emailId,
-      orderData: orderData  
-    });
-
+        email: emailId,
+        orderData: enrichedOrderData
+      });
     } else {
-        await Order.findOneAndUpdate(
+      await Order.findOneAndUpdate(
         { email: emailId },
-        { $push: { orderData: { $each: orderData } } }
-    );
+        { $push: { orderData: { $each: enrichedOrderData } } }
+      );
     }
 
     return res.json({ success: true });

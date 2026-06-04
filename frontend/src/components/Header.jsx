@@ -19,6 +19,7 @@ function Header() {
 
   const navigate = useNavigate();
   const [cartView, setCartView] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const token = Cookies.get('authToken');
 
   const handleLogout = () => {
@@ -56,12 +57,12 @@ function Header() {
     <>
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-3 md:py-4">
             <Link to="/" className="text-2xl font-semibold text-emerald-600 tracking-tight">
               beFoodie
             </Link>
 
-            <nav className="flex gap-8 text-base font-medium text-gray-700">
+            <nav className="hidden md:flex gap-6 text-sm md:text-base font-medium text-gray-700 items-center">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -96,12 +97,23 @@ function Header() {
               </NavLink>
             </nav>
 
-            <div className="flex items-center gap-4">
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                className="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+                onClick={() => setMobileOpen((s) => !s)}
+                aria-label="Toggle menu"
+              >
+                <i className="fa-solid fa-bars"></i>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3">
             {token ? (
               <div className="flex items-center gap-4">
                 <Link
                   to="/cart"
-                  className="flex items-center gap-2 px-4 py-2 border border-emerald-600 rounded-full text-emerald-600 hover:bg-emerald-50"
+                  className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 border border-emerald-600 rounded-full text-emerald-600 hover:bg-emerald-50"
                 >
                   <i className="fa-solid fa-cart-shopping"></i>
                   <span>{cartCount}</span> 
@@ -115,7 +127,7 @@ function Header() {
 
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
+                    className="px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
                   >
                     Logout
                   </button>
@@ -125,7 +137,7 @@ function Header() {
                   {/* Login Button */}
                   <button
                     onClick={() => dispatch(openLogin())}
-                    className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
+                    className="px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
                   >
                     Login
                   </button>
@@ -152,7 +164,7 @@ function Header() {
                   {/* Signup Button */}
                   <button
                     onClick={() => dispatch(openSignup())}
-                    className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
+                    className="px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100"
                   >
                     Sign Up
                   </button>
@@ -180,6 +192,51 @@ function Header() {
             </div>
           </div>
         </div>
+        {/* Mobile dropdown menu */}
+        {mobileOpen && (
+          <div className="md:hidden bg-white border-t border-gray-200">
+            <div className="px-4 pt-4 pb-6 space-y-4">
+              <NavLink
+                to="/"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "block text-emerald-600 border-b-2 border-emerald-600 pb-1"
+                    : "block hover:text-emerald-600"
+                }
+              >
+                Home
+              </NavLink>
+
+              {token && (
+                <NavLink
+                  to="/myorderdata"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "block text-emerald-600 border-b-2 border-emerald-600 pb-1"
+                      : "block hover:text-emerald-600"
+                  }
+                >
+                  Orders
+                </NavLink>
+              )}
+
+              <NavLink
+                to="/about"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  isActive
+                    ? "block text-emerald-600 border-b-2 border-emerald-600 pb-1"
+                    : "block hover:text-emerald-600"
+                }
+              >
+                About
+              </NavLink>
+
+            </div>
+          </div>
+        )}
       </header>
     </>
   );

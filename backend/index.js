@@ -13,11 +13,7 @@ import cors from 'cors'
 config({path : "./config/config.env"})
 mongo();  
 const app = express();
-
-export const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_API_KEY,
-    key_secret: process.env.RAZORPAY_API_SECRET
-})
+import instance from './razorpayClient.js'
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173"); // Updated to match your frontend port

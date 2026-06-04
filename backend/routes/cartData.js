@@ -1,17 +1,33 @@
 import express from "express";
 import Cart from "../models/Cart.js";
+import mongoose from 'mongoose';
 import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
 router.post("/addToCart", verifyToken, async (req, res) => {
   const email = req.user.user.email;
-  const { name, qty, size, price } = req.body;
+  const { name, qty, size, price, img } = req.body;
 
   try {
     let cart = await Cart.findOne({ email });
 
-    const newItem = { name, qty, size, price };
+    // prefer provided image; otherwise try to lookup from food_items collection
+    let itemImg = img;
+    try {
+      if (!itemImg) {
+        const found = await mongoose.connection.db
+          .collection('food_items')
+          .findOne({ name: name });
+        if (found && (found.img || found.image)) {
+          itemImg = found.img || found.image;
+        }
+      }
+    } catch (lookupErr) {
+      console.error('Image lookup failed', lookupErr);
+    }
+
+    const newItem = { name, qty, size, price, img: itemImg };
 
     if (!cart) {
       cart = new Cart({ email, items: [newItem] });

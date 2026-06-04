@@ -5,6 +5,7 @@ const cartItemSchema = new mongoose.Schema({
   qty: { type: Number, required: true },
   size: { type: String, required: true },
   price: { type: Number, required: true },
+  img: { type: String },
 }, { _id: false }); // no _id needed per item
 
 const cartSchema = new mongoose.Schema({

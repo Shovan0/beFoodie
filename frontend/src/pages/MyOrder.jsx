@@ -29,6 +29,7 @@ function MyOrder() {
 
       if (result?.orderData?.orderData && Array.isArray(result.orderData.orderData)) {
         setOrders([result.orderData.orderData]);
+        console.log("Orders set successfully:", result.orderData.orderData);
       } else {
         console.warn("No valid order data found.");
         setOrders([]);
@@ -84,9 +85,10 @@ function MyOrder() {
                     className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
                   >
                     <img
-                      src={item.img}
+                      src={item.img || item.image || 'https://via.placeholder.com/400x300?text=No+Image'}
                       alt={item.name}
                       className="w-full h-40 object-cover"
+                      onError={(e)=>{e.currentTarget.src='https://via.placeholder.com/400x300?text=No+Image'}}
                     />
                     <div className="p-4">
                       <h3 className="text-lg font-semibold text-gray-800 mb-1">

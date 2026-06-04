@@ -1,7 +1,5 @@
-import { instance } from "../index.js"
-import {config} from "dotenv";
+import instance from "../razorpayClient.js"
 import crypto from "crypto"
-config({path : "../config/config.env"})
 
 
 export const checkOut = async (req, res)=> {
@@ -10,7 +8,9 @@ export const checkOut = async (req, res)=> {
         currency: "INR"
     }
     try {
+        console.log('Creating Razorpay order with options:', options)
         const order = await instance.orders.create(options);
+        console.log('Razorpay order created:', { id: order.id, amount: order.amount })
         res.status(200).json({success : true, order})
     } catch (error) {
         console.log("controller line 17 ",error)

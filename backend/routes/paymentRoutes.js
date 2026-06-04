@@ -1,4 +1,4 @@
-import { instance } from "../index.js"
+import instance from "../razorpayClient.js"
 import express from 'express';
 const router = express.Router();
 import {checkOut, paymentVerification} from '../controllers/paymentController.js'

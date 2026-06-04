@@ -9,7 +9,7 @@ function FoodCategory({ category, onClick }) {
       <img
         src={category.image}
         alt={category.CategoryName}
-        className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover shadow-md"
+        className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover shadow-md"
       />
       <span className="mt-2 text-sm md:text-base font-medium">
         {category.CategoryName}

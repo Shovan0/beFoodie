@@ -5,10 +5,10 @@ function Footer() {
     return (
         <>
   <footer className="bg-white border-t border-gray-200 py-10 mt-auto">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm text-gray-600">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm text-gray-600 text-center sm:text-left">
       
       {/* Logo + Copyright */}
-      <div>
+      <div className="sm:text-left">
         <Link to="/" className="text-2xl font-semibold text-emerald-600">
           beFoodie
         </Link>

@@ -36,6 +36,7 @@ function Card({ foodItem, options }) {
           qty,
           size,
           price: finalPrice,
+          img: foodItem.img,
         }),
       });
 
@@ -53,14 +54,14 @@ function Card({ foodItem, options }) {
   };
 
   return (
-    <div className="max-w-sm mx-auto my-6 bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg">
+    <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg flex flex-col h-full">
       <img
         src={foodItem.img}
         alt={foodItem.name}
-        className="w-full h-48 object-cover rounded-t-2xl"
+        className="w-full h-40 sm:h-44 md:h-48 object-cover rounded-t-2xl"
       />
 
-      <div className="p-5">
+      <div className="p-5 flex-1 flex flex-col">
         <h5 className="text-xl font-semibold text-gray-800 mb-2">
           {foodItem.name}
         </h5>
@@ -100,16 +101,18 @@ function Card({ foodItem, options }) {
           </select>
         </div>
 
-        <div className="text-lg font-bold text-gray-800 mb-4">
-          ₹{finalPrice}/-
-        </div>
+        <div className="mt-auto">
+          <div className="text-lg font-bold text-gray-800 mb-4">
+            ₹{finalPrice}/-
+          </div>
 
-        <button
-          onClick={handleAddToCart}
-          className="w-full py-2 bg-emerald-600 text-white font-medium rounded-full hover:bg-emerald-700 transition"
-        >
-          Add to Cart
-        </button>
+          <button
+            onClick={handleAddToCart}
+            className="w-full py-2 bg-emerald-600 text-white font-medium rounded-full hover:bg-emerald-700 transition"
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
     </div>
   );
