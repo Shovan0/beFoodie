@@ -40,20 +40,16 @@ const app = express();
 import instance from './razorpayClient.js'
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
-// Build allowed origins list; include localhost for local dev when present.
 const allowedOrigins = [
     'http://localhost:5173',
 ].concat(FRONTEND_URL ? [FRONTEND_URL] : []).filter(Boolean);
 
-// Use a dynamic origin handler so the server reflects the requesting origin when appropriate.
 app.use(cors({
     origin: (origin, callback) => {
-        // allow requests with no origin (e.g., curl, server-to-server)
         if (!origin) return callback(null, true);
         if (allowedOrigins.length === 0 || allowedOrigins.indexOf(origin) !== -1) {
             return callback(null, true);
         }
-        // Not in allowlist — echo origin to allow browser requests while logging for debugging.
         console.warn('CORS: origin not in allowlist, echoing to allow during runtime:', origin);
         return callback(null, true);
     },
@@ -83,6 +79,16 @@ app.get("/api/getkey", (req, res)=> {
     res.status(200).json({key:process.env.RAZORPAY_API_KEY})
 })
 
-app.listen(process.env.PORT, () => {
-    console.log(`Example app listening on port ${process.env.PORT}`);
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}`);
+});
+
+server.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Kill the process using that port or set a different PORT.`);
+        process.exit(1);
+    }
+    console.error('Server error:', err);
+    process.exit(1);
 });
